@@ -24,24 +24,54 @@ namespace Model.Core
       QualityRating = qualityRating;
     }
 
+    protected Game() { }
+
     public virtual string GetGameInfo()
         {
             return $"{Title} - {Genre} ({ReleaseDate.Year})";
         }
 
-        // Перегрузка 1
-        public string GetGameInfo(bool fullDetails)
-        {
-            if (fullDetails)
-                return $"{Title} | Жанр: {Genre} | Возраст: {AgeRestriction}+ | Рейтинг: {QualityRating:F1} | Дата: {ReleaseDate:dd.MM.yyyy}";
-            else
-                return Title;
-        }
+    // Перегрузка 1
+    public string GetGameInfo(bool fullDetails)
+    {
+        if (fullDetails)
+            return $"{Title} | Жанр: {Genre} | Возраст: {AgeRestriction}+ | Рейтинг: {QualityRating:F1} | Дата: {ReleaseDate:dd.MM.yyyy}";
+        else
+            return Title;
+    }
 
-        // Перегрузка 2
-        public string GetGameInfo(string platformName)
-        {
-            return $"[{platformName}] {Title} - {Genre}";
-        }
+    // Перегрузка 2
+    public string GetGameInfo(string platformName)
+    {
+        return $"[{platformName}] {Title} - {Genre}";
+    }
+
+    // Свойства для отображения в таблице
+    // Режим игры (возвращает имя класса) 
+    public string GameMode
+    {
+      get
+      {
+        if (this is SingleGame) return "Single";
+        if (this is MultiplayerGame) return "Multiplayer";
+        if (this is OnlineGame) return "Online";
+        return "Unknown";
+      }
+    }
+
+    // Платформы (возвращает строку с поддерживаемыми платформами)
+    public string Platforms
+    {
+      get
+      {
+        var platforms = new System.Collections.Generic.List<string>();
+
+        if (this is IComputerable) platforms.Add("PC");
+        if (this is IConsoleable) platforms.Add("Console");
+        if (this is IMobile) platforms.Add("Mobile");
+
+        return string.Join(", ", platforms);
+      }
+    }
   }
 }
