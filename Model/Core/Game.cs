@@ -12,7 +12,7 @@ namespace Model.Core
     public string Genre { get; set; }
     public int AgeRestriction { get; set; }
     public DateTime ReleaseDate { get; set; }
-    public double QualityRating { get; set; }
+    public virtual double QualityRating { get; set; }
 
     protected Game(string title, string genre, int ageRestriction,
                   DateTime releaseDate, double qualityRating)
